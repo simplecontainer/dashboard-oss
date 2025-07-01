@@ -20,15 +20,6 @@ on:
         type: choice
         options:
           - dashboard
-      test_name:
-        description: 'Optional test name to run'
-        required: false
-        type: string
-      test_flags:
-        description: 'Optional test flags'
-        required: false
-        type: string
-
 jobs:
   prepare-release:
     if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'workflow_dispatch'
@@ -47,6 +38,8 @@ jobs:
         run: |
           COMPONENT="${{ github.event.inputs.component || 'all' }}"
           VERSION=$(cat version)
+          VERSION=$(.github/scripts/version.sh "$VERSION" "${{ github.event.head_commit.message }}")
+
           TAG="${VERSION}"
 
           echo "Generated tags: $TAG"
