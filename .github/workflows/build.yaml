@@ -19,9 +19,7 @@ on:
         default: 'all'
         type: choice
         options:
-          - all
-          - smr
-          - smrctl
+          - dashboard
       test_name:
         description: 'Optional test name to run'
         required: false
@@ -36,8 +34,7 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     outputs:
-      tag_smr: ${{ steps.generate_tag.outputs.tag_smr }}
-      tag_ctl: ${{ steps.generate_tag.outputs.tag_ctl }}
+      tag: ${{ steps.generate_tag.outputs.tag }}
       matrix: ${{ steps.generate_tag.outputs.matrix }}
     steps:
       - uses: actions/checkout@v4
