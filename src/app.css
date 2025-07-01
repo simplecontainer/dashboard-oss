@@ -1,0 +1,173 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+@plugin "daisyui" {
+  /* Disable all other themes which forces the default theme created below. You can add a dark mode theme using daisyui if you like, and it will automatically use it when the user's system is in dark mode. Docs: https://daisyui.com/docs/themes/ */
+  themes: false;
+}
+
+@plugin "daisyui/theme" {
+  name: "saasstartertheme";
+  default: true; /* set as default */
+  prefersdark: false; /* set as default dark mode (prefers-color-scheme:dark) */
+  color-scheme: light; /* color of browser-provided UI */
+
+  --color-primary: #232329;
+  --color-primary-content: #fefbf6;
+  --color-secondary: #f6d860;
+  --color-secondary-content: #180042;
+  --color-accent: #37cdbe;
+  --color-accent-content: #37cdbe;
+  --color-neutral: #3d4451;
+  --color-neutral-content: #fefbf6;
+  --color-base-100: #f4f4f4;
+  --color-base-200: #f9f9f9;
+  --color-base-content: #180042;
+  --color-success: #3aaf71;
+  --color-success-content: oklch(98% 0.01 140);
+  --color-error: #ba3434;
+  --color-error-content: oklch(98% 0.01 30);
+  --color-info: #3a92f3;
+  --color-info-content: oklch(98% 0.01 120);
+  --color-warning: #f49447;
+
+  /* border radius */
+  --radius-selector: 1rem;
+  --radius-field: 0.5rem;
+  --radius-box: 0.5rem;
+
+  /* base sizes */
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+
+  /* border size */
+  --border: 1px;
+
+  /* effects */
+  --depth: 1;
+  --noise: 0;
+}
+
+.wiggle {
+  animation: wiggle 0.5s ease-in-out;
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: translateX(0); }
+  15% { transform: translateX(-6px); }
+  30% { transform: translateX(6px); }
+  45% { transform: translateX(-4px); }
+  60% { transform: translateX(4px); }
+  75% { transform: translateX(-2px); }
+  90% { transform: translateX(2px); }
+}
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
+
+a {
+  @apply cursor-pointer;
+}
+
+/* Hack to temporarily solve https://github.com/supabase/auth-ui/issues/219 */
+a {
+  @apply cursor-pointer;
+}
+
+/* Hack to temporarily solve https://github.com/supabase/auth-ui/issues/219 */
+.authBtn {
+  @apply btn;
+}
+
+button[disabled].authBtn {
+  font-size: 0.001px;
+  filter: brightness(65%);
+}
+button[disabled].authBtn::before {
+  font-size: 14px;
+  content: "Loading...";
+  color: oklch(var(--pc));
+}
+
+.node rect {
+  fill: #ffffff;
+  stroke: #3d4451;
+  stroke-width: 1px;
+  display: block;
+  padding: 0;
+  rx: 0.125rem;
+  ry: 0.125rem;
+}
+
+.label-gitops {
+  cursor: pointer;
+}
+
+.label-gitops:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.label-gitops:active {
+  cursor: pointer;
+  opacity: 1;
+}
+
+.missing { background-color: #9ca3af }
+.synced { background-color: #00ca92 }
+.drifted { background-color:#ffc22d }
+.transfer { background-color:#ff6f70 }
+.error { background-color:#ff6f70 }
+
+.initial{ background-color: #f38518 }
+.transfering{ background-color: #f38518}
+.dependency_updated{ background-color: #f38518 }
+.created{ background-color: #f38518 }
+.clean{ background-color: #f38518 }
+.prepare{ background-color: #f38518 }
+.init{ background-color: #f38518 }
+.init_failed{ background-color: #f38518 }
+.depends_checking{ background-color: #f38518 }
+.depends_solved{ background-color: #f38518 }
+.readiness_check{ background-color: #f38518 }
+.readiness_ready{ background-color: #f38518 }
+.running { background-color: #00ca92 }
+.dead { background-color:#ff6f70 }
+.backoff { background-color:#ff6f70 }
+.daemon_failure{ background-color:#ff6f70 }
+.restart{ background-color: #f38518 }
+.depends_failed{ background-color:#ff6f70 }
+.readiness_failed{ background-color:#ff6f70 }
+.pending{ background-color: #ffc22d  }
+.runtime_pending{ background-color: #ffc22d  }
+.start{ background-color: #f38518 }
+.kill{ background-color: #f38518 }
+.delete{ background-color: #f38518 }
+
+
+
+.missing-stroke {  }
+.synced-stroke { stroke: white }
+.drifted-stroke { stroke: white }
+.transfer-stroke { stroke: white }
+.error { stroke: white }
+
+
+.edgePath path {
+  stroke: #333;
+  stroke-width: 1px;
+}
