@@ -1,4 +1,4 @@
-name: Simplecontainer CI/CD
+name: Dashboard CI/CD
 
 on:
   push:
@@ -49,7 +49,7 @@ jobs:
         id: generate_tag
         run: |
           COMPONENT="${{ github.event.inputs.component || 'all' }}"
-          VERSION=$(cat cmd/smr/version)
+          VERSION=$(cat version)
           TAG="${VERSION}"
 
           echo "Generated tags: $TAG"
@@ -82,11 +82,11 @@ jobs:
           
             VERSION=$(cat version)
             VERSION=$(.github/scripts/version.sh "$VERSION" "${{ github.event.head_commit.message }}")
-            echo "$VERSION" > cmd/$COMPONENT/version
+            echo "$VERSION" > version
           
             git config user.name "actions"
             git config user.email "actions-user@github.com"
-            git add cmd/$COMPONENT/version
+            git add version
             git commit -m "Automated version tracking for $TAG" || echo "No changes to commit"
             git pull
             git tag "$TAG"
