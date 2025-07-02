@@ -126,21 +126,24 @@
     let resp
 
     if (group() && generatedName()) {
-      resp = await fetch(`${c.GetProxyURL()}/api/v1/kind/simplecontainer.io/v1/state/containers/${group() }/${generatedName()}`, {
+      const tmp = field.split("-");
+      const name = tmp.slice(1, -1).join("-");
+
+      resp = await fetch(`${c.GetProxyURL()}/api/v1/state/simplecontainer.io/v1/state/containers/${group()}/${name}/${generatedName()}`, {
         method: 'GET',
         headers: {
           Upstream: btoa(c.Context.API).replace(/=+$/,''),
         },
       });
     } else if (group() ) {
-      resp = await fetch(`${c.GetProxyURL()}/api/v1/kind/simplecontainer.io/v1/state/containers/${group() }`, {
+      resp = await fetch(`${c.GetProxyURL()}/api/v1/state/simplecontainer.io/v1/state/containers/${group()}`, {
         method: 'GET',
         headers: {
           Upstream: btoa(c.Context.API).replace(/=+$/,''),
         },
       });
     } else {
-      resp = await fetch(`${c.GetProxyURL()}/api/v1/kind/simplecontainer.io/v1/state/containers`, {
+      resp = await fetch(`${c.GetProxyURL()}/api/v1/state/simplecontainer.io/v1/state/containers`, {
         method: 'GET',
         headers: {
           Upstream: btoa(c.Context.API).replace(/=+$/,''),
@@ -191,7 +194,7 @@
     try {
       const resp = await fetch(`${$connection.GetProxyURL()}/api/v1/propose/remove`, {
         method: 'DELETE',
-        body: ToJson($containersMap[containerId].Platform.Definition),
+        body: ToJson($containersMap[containerId].Definition),
         headers: {
         Upstream: btoa($connection.Context.API).replace(/=+$/,''),
       },
@@ -275,7 +278,7 @@
             </svg>
           {/if}
 
-          {#if $containersMap[containerId].Platform.Definition.meta.runtime.owner.kind == "gitops"}
+          {#if $containersMap[containerId].Definition.meta.runtime.owner.kind == "gitops"}
             <div class="badge badge-xs badge-neutral">GITOPS</div>
           {/if}
         </td>
@@ -344,7 +347,7 @@
             <div class="border border-gray-300 rounded-lg p-4 pt-0">
               <ConfirmationModal
                       open={confirm}
-                      message="Are you sure - this will delete all {$containersMap[containerId].Platform.Definition.spec.replicas} replicas?"
+                      message="Are you sure - this will delete all {$containersMap[containerId].Definition.spec.replicas} replicas?"
                       type="error"
                       onConfirm={handleConfirm}
                       onCancel={handleCancel}
@@ -821,8 +824,8 @@
                 <div role="tabpanel" class="tab-content rounded-box p-6">
                   <div class="flex w-full flex-col">
                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4">
-                      {#if $containersMap[containerId].Platform.Definition.spec.dependencies !== undefined }
-                      {#each $containersMap[containerId].Platform.Definition.spec.dependencies as dependency }
+                      {#if $containersMap[containerId].Definition.spec.dependencies !== undefined }
+                      {#each $containersMap[containerId].Definition.spec.dependencies as dependency }
                         <div class="card bg-base-100 shadow-xl">
                           <div class="card-body">
                             <h2 class="card-title">
@@ -895,7 +898,7 @@
                         on:change={() => handleTabChange("Definition")}
                 />
                 <div role="tabpanel" class="tab-content rounded-box p-6">
-                  <EditorModule content={editorContent} code={yaml.dump($containersMap[containerId].Platform.Definition)} language="yaml" theme="vs-light" />
+                  <EditorModule content={editorContent} code={yaml.dump($containersMap[containerId].Definition)} language="yaml" theme="vs-light" />
                 </div>
 
                 <input

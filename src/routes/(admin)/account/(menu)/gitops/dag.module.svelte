@@ -31,7 +31,7 @@
                 </div>`)
         }));
 
-        for (let d of $gitopsMap[id].Pack.Definitions) {
+        for (let d of $gitopsMap[id].Gitops.Pack.Definitions) {
             let def = d.Definition.Definition
 
             const defId = `${def.kind}-${def.meta.group}-${def.meta.name}`;

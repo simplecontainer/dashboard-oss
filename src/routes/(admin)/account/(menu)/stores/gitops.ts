@@ -41,7 +41,7 @@ export function RemoveGitops(id: string) {
 
 export async function ReloadGitops(c: Connection, group: string, name: string) {
     try {
-        const resp = await fetch(`${c.GetProxyURL()}/api/v1/kind/simplecontainer.io/v1/state/gitops/${group}/${name}`, {
+        const resp = await fetch(`${c.GetProxyURL()}/api/v1/kind/simplecontainer.io/v1/state/gitops/${group}/${name}/${name}`, {
             method: 'GET',
             headers: {
         Upstream: btoa(c.Context.API).replace(/=+$/,''),

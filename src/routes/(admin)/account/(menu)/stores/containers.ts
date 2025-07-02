@@ -48,9 +48,12 @@ export function SortContainers() {
 }
 
 
-export async function ReloadContainer(c: Connection, group: string, name: string) {
+export async function ReloadContainer(c: Connection, group: string, field: string) {
+    const tmp = field.split("-");
+    const name = tmp.slice(1, -1).join("-");
+
     try {
-        const resp = await fetch(`${c.GetProxyURL()}/api/v1/kind/simplecontainer.io/v1/state/containers/${group}/${name}`, {
+        const resp = await fetch(`${c.GetProxyURL()}/api/v1/state/simplecontainer.io/v1/state/containers/${group}/${name}/${field}`, {
             method: 'GET',
             headers: {
                 Upstream: btoa(c.Context.API).replace(/=+$/,''),

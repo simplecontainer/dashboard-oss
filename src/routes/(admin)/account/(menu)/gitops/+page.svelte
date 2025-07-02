@@ -85,7 +85,7 @@
     if (c.GetProxyURL() !== "" && !once) {
       once = true
 
-      const resp = await fetch(`${c.GetProxyURL()}/api/v1/kind/simplecontainer.io/v1/state/gitops`, {
+      const resp = await fetch(`${c.GetProxyURL()}/api/v1/state/simplecontainer.io/v1/state/gitops`, {
         method: 'GET',
         headers: {
         Upstream: btoa(c.Context.API).replace(/=+$/,''),
@@ -279,8 +279,8 @@
     <tbody>
     {#each $gitopsIds as gitopsId}
       {#if $gitopsMap[gitopsId].Definition != undefined}
-        <tr class="border-b-0 { $gitopsMap[gitopsId].Status.state.state === 'pending_delete' ? 'bg-warning' : '' }">
-        <th>{$gitopsMap[gitopsId].Node.NodeName}</th>
+        <tr class="border-b-0 { $gitopsMap[gitopsId].Gitops.Status.state.state === 'pending_delete' ? 'bg-warning' : '' }">
+        <th>{$gitopsMap[gitopsId].Gitops.Node.NodeName}</th>
         <td>
           {$gitopsMap[gitopsId].Definition.meta.group}
         </td>
@@ -288,25 +288,25 @@
           {$gitopsMap[gitopsId].Definition.meta.name}
         </td>
         <td>
-          {$gitopsMap[gitopsId].Git.Repository} ({convertToShortGitIdFromArray($gitopsMap[gitopsId].Commit.Hash)})
+          {$gitopsMap[gitopsId].Gitops.Git.Repository} ({convertToShortGitIdFromArray($gitopsMap[gitopsId].Gitops.Commit.Hash)})
         </td>
         <td>
-          {$gitopsMap[gitopsId].Git.Revision}
+          {$gitopsMap[gitopsId].Gitops.Git.Revision}
         </td>
         <td>
-          {$gitopsMap[gitopsId].AutomaticSync}
+          {$gitopsMap[gitopsId].Gitops.AutomaticSync}
         </td>
         <td>
-          {#if $gitopsMap[gitopsId].Status.state.state === "insync"}
+          {#if $gitopsMap[gitopsId].Gitops.Status.state.state === "insync"}
               <span class="indicator-item badge badge-success">InSync</span>
-          {:else if $gitopsMap[gitopsId].Status.state.state === "drifted"}
+          {:else if $gitopsMap[gitopsId].Gitops.Status.state.state === "drifted"}
               <span class="indicator-item badge badge-warning">Drifted</span>
-          {:else if $gitopsMap[gitopsId].Status.state.state === "definitionsinvalid"}
+          {:else if $gitopsMap[gitopsId].Gitops.Status.state.state === "definitionsinvalid"}
             <span class="indicator-item badge badge-error">Invalid definition/s</span>
-          {:else if $gitopsMap[gitopsId].Status.state.state === "gitinvalid"}
+          {:else if $gitopsMap[gitopsId].Gitops.Status.state.state === "gitinvalid"}
             <span class="indicator-item badge badge-error">Invalid git</span>
           {:else}
-            <span class="indicator-item badge">{$gitopsMap[gitopsId].Status.state.state}</span>
+            <span class="indicator-item badge">{$gitopsMap[gitopsId].Gitops.Status.state.state}</span>
           {/if}
         </td>
         <td>
@@ -427,7 +427,7 @@
         <div role="tabpanel" class="tab-content bg-base-200 border-base-100 rounded-box p-6 max-h-[80vh]">
           <table class="table">
             <tbody>
-              {#each $gitopsMap[$openItem].Pack.Definitions as definition}
+              {#each $gitopsMap[$openItem].Gitops.Pack.Definitions as definition}
                 {#if $modalItem == `${definition.Definition.Definition.kind}-${definition.Definition.Definition.meta.group}-${definition.Definition.Definition.meta.name}`}
                   {#if Object.entries(definition.Definition.Definition.state.gitops.messages).length != 0}
                     {#each Object.entries(definition.Definition.Definition.state.gitops.messages).reverse() as [key, value]}
@@ -460,7 +460,7 @@
           <EditorModule code={JSON.stringify($gitopsMap[$openItem], null, 2)} language="json" theme="vs-light" height="height: 80vh"/>
         </div>
 
-        {#each $gitopsMap[$openItem].Pack.Definitions as definition}
+        {#each $gitopsMap[$openItem].Gitops.Pack.Definitions as definition}
           {#if `${definition.Definition.Definition.kind}-${definition.Definition.Definition.meta.group}-${definition.Definition.Definition.meta.name}` == $modalItem}
             <input type="radio" name="modal_tabs" role="tab" class="tab" aria-label="Diff" value="diff" bind:group={$selectedTabModal} on:change={() => handleTabChange("Diff")}/>
             <div role="tabpanel" class="tab-content bg-base-200 border-base-100 rounded-box p-6 max-h-[80vh]">
