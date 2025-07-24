@@ -13,7 +13,8 @@ over the resources.
 - Editor for applying resources directly from the dashboard
 
 # How to deploy?
-Dashboard can be easily deployed on the simplecontainer nodes directly.
+Dashboard can be easily deployed on the simplecontainer nodes directly. This example provides Authentik and Traefik to provide
+secure access to the dashboard.
 ```cgo
 git clone https://github.com/simplecontainer/examples
 smrctl apply examples/dashboard
