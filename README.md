@@ -20,6 +20,12 @@ It is up to the user to provide authentication in front of the dashboard if it i
 First image shows interactive container listing that uses WebSocket to track container events in the real time.
 ![Simplecontainer Containers](.github/resources/dashboard-containers.png)
 
-Second image shows GitOps (app-of-apps pattern) visualization. It also relly on the WebSocket to provide updates 
+Second image shows GitOps (app-of-apps pattern) visualization. It also relies on the WebSocket to provide updates 
 in the real time directly on the diagram.
 ![Simplecontainer Containers](.github/resources/dashboard-gitops.png)
+
+# Security
+Simplecontainer control-plane by default is secure because it relies on  mTLS for authentication and encryption fo the data.
+Browsers cannot handle mTLS advanced management and certificate-key mangling directly in the browser. Proxy-manager is accompanying dashboard to enable control plane communication.
+
+Dashboard sends to the proxy manager context and it opens reverse proxy to the upstream simplecontainer node.
