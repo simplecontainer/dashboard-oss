@@ -111,7 +111,6 @@
   <NoContexts></NoContexts>
 {:else }
   <div class="container w-full max-w-none mt-5 pb-14">
-    <h4 class="text-md font-bold mb-6">Contexts</h4>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 mt-5">
       {#each $connections.entries() as [key, c]}
         <div class="card bg-base-100 w-full shadow-xl">

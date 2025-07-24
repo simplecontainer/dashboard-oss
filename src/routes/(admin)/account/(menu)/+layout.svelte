@@ -3,9 +3,6 @@
   import { writable } from "svelte/store"
   import {onMount, setContext} from "svelte"
   import { WebsiteName } from "../../../../config"
-  // import { GetActiveContextSession, GetContextSession } from "../context_session";
-  // import { context, contexts, AddContext }from "./stores/cluster_store"
-  //
 
   interface Props {
     children?: import("svelte").Snippet
@@ -32,8 +29,8 @@
 
 <div class="drawer lg:drawer-open">
   <input id="admin-drawer" type="checkbox" class="drawer-toggle" />
-  <div class="drawer-content bg-base-200 xs:min-width:100%">
-    <div class="navbar bg-base-100 lg:hidden">
+  <div class="drawer-content bg-base-300 xs:min-width:100%">
+    <div class="navbar lg:hidden">
       <div class="flex-1">
         <a class="btn btn-ghost normal-case text-xl" href="/account">{WebsiteName}</a>
       </div>
@@ -57,7 +54,7 @@
         </div>
       </div>
     </div>
-    <div class="container bg-base-200 px-6 lg:px-12 py-3 lg:py-6 xs:max-w-none xs:w-full md:max-w-none md:w-full sm:max-w-none sm:w-full">
+    <div class="container bg-base-300 px-6 lg:px-12 py-3 lg:py-6 xs:max-w-none xs:w-full md:max-w-none md:w-full sm:max-w-none sm:w-full">
       {@render children?.()}
     </div>
   </div>
@@ -65,7 +62,7 @@
   <div class="drawer-side">
     <label for="admin-drawer" class="drawer-overlay"></label>
     <ul
-      class="menu menu-lg p-4 w-80 min-h-full bg-base-100 lg:border-r text-primary"
+      class="menu menu-lg p-4 w-80 min-h-full bg-base-100 lg:border-r border-gray-200 text-primary"
     >
       <li>
         <div

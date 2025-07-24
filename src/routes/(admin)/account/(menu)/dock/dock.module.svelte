@@ -3,7 +3,7 @@
     import { wiggle } from '../shared.ts/actions/wiggle';
     import loader from '@monaco-editor/loader';
     import {connection} from "../stores/connections"
-    import {activeDockItem, showFullScreenDiv, activeContent, editorContent, editorPreview} from "../stores/dock"
+    import {activeDockItem, showFullScreenDiv, activeContent, editorContent, editorFile, editorPreview} from "../stores/dock"
     import EditorModule from '../shared/editor.svelte'
     import { onMount, onDestroy } from 'svelte';
     import toastStore from '../../toasts';
@@ -57,14 +57,17 @@
     onMount(async () => {
         await loader.init();
         document.addEventListener('keydown', handleEscKey);
-
-        onDestroy(() => {
-            document.removeEventListener('keydown', handleEscKey);
-        });
     });
+
+    onDestroy(() => {
+        if (typeof document !== 'undefined') {
+            document.removeEventListener('keydown', handleEscKey);
+        }
+    });
+
 </script>
 
-<div class="dock dock-md w-full bg-base-200"
+<div class="dock dock-md w-full bg-base-100"
      class:fixed={!!$activeDockItem}
      class:top-0={!!$activeDockItem}
      class:dock-full={!!$activeDockItem}>
@@ -117,14 +120,14 @@
     <div class="fullscreen-overlay">
         {#if $activeDockItem == "Editor"}
             <div class="flex w-full flex-col mt-2 mb-2">
-                <div class="navbar bg-base-200 shadow-sm mb-5">
+                <div class="navbar bg-base-100 shadow-sm mb-5">
                     <div class="navbar-start">
                         <div class="dropdown">
                             <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" /> </svg>
                             </div>
                         </div>
-                        <a class="btn btn-ghost text-xl">Empty file</a>
+                        <a class="btn btn-ghost text-xl">{$editorFile}</a>
                     </div>
                     <div class="navbar-end">
                         {#if $connection != undefined && $connection.State != null && $connection.State.WSS == true && $editorPreview === false}

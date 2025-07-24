@@ -14,7 +14,6 @@ export function AddOrUpdateConnection(c: Connection) {
     connections.update(map => {
         const updated = new Map(map);
         updated.set(c.Context.Name, c);
-        AddConnectionSession(c);
         return updated;
     });
 }

@@ -13,7 +13,7 @@ const SessionStore = (key: string, initialValue: Connection) => {
     return store;
 };
 
-const SessionRemove = (key: string)=> {
+const SessionRemove = (key: string) => {
     sessionStorage.removeItem(key)
 }
 
@@ -22,11 +22,13 @@ export function AddConnectionSession(c: Connection) {
 }
 
 export function SetActiveConnectionSession(c: Connection) {
+    console.log("XXXXXXXXXXXXXXXXXXXAAAAAAAAAAAAAAAAAAA")
     SessionStore("active", c)
 }
 
 export function RemoveActiveConnectionSession(){
     SessionRemove("active")
+    console.log("XXXXXXXXXXX")
 }
 
 export function GetActiveConnectionSession() {

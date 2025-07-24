@@ -1,5 +1,6 @@
 <script lang="ts">
     import { onMount, onDestroy } from 'svelte';
+    import { editorContent, editorFile } from '../stores/dock';
 
     // Define props to accept configuration for Monaco editor
     export let content: any
@@ -29,6 +30,8 @@
     onDestroy(() => {
         if (editor) {
             editor.dispose();
+            editorFile.set("New resource")
+            editorContent.set("")
         }
     });
 </script>

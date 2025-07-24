@@ -16,6 +16,12 @@ export class Connection implements IConnection {
         this.State = new State(data.State);
     }
 
+    Clear(): void {
+        this.State.WSS = false
+        this.State.Online = false
+        this.State.Offline = false
+    }
+
     SetConnected(): void  {
         this.State.WSS = true;
     }
@@ -98,7 +104,6 @@ export class Connection implements IConnection {
             },
         }, 10000)
         .then(async (resp) => {
-            console.log(resp)
             if (resp.ok) {
                 this.SetOnline()
             } else {

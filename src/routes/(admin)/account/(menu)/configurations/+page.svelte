@@ -13,6 +13,7 @@
   import {isEmptyObject} from "../../helpers/objects";
   import {activeDockItem, editorContent, showFullScreenDiv} from "../stores/dock";
   import {Preview} from "../shared/preview"
+  import DockModule from '../dock/dock.module.svelte';
 
   let openModal = writable(false);
 
@@ -104,7 +105,7 @@
   {:else}
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-5">
   {#each Object.entries($configurationsMap) as [key, configuration]}
-  <div class="card bg-base-100 shadow-sm">
+  <div class="card bg-base-100 shadow-xl">
     <div class="card-body">
       <h2 class="card-title">
         {configuration.meta.group}/{configuration.meta.name}
@@ -140,7 +141,7 @@
               <div class="text-xs uppercase font-semibold opacity-60">Configuration</div>
             </div>
             <pre class="list-col-wrap text-xs code-container"><code>{value}</code></pre>
-            <button class="btn btn-square btn-ghost on:click={Preview}">
+            <button class="btn btn-square btn-ghost" on:click={(e) => Preview(e, `${key}`)}>
               <svg class="size-[1.2em]" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="18" cy="16" r="4" stroke="#1C274C" stroke-width="1.5"/>
                 <circle cx="6" cy="16" r="4" stroke="#1C274C" stroke-width="1.5"/>
@@ -160,5 +161,7 @@
 </div>
 {/if}
 </div>
+
+<DockModule></DockModule>
 
 <ToastModule></ToastModule>

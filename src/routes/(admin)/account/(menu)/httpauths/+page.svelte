@@ -140,7 +140,7 @@
               <div class="text-xs uppercase font-semibold opacity-60">Resource</div>
             </div>
             <pre class="list-col-wrap text-xs code-container"><code>{value}</code></pre>
-            <button class="btn btn-square btn-ghost" on:click={Preview}>
+            <button class="btn btn-square btn-ghost" on:click={(e) => Preview(e, `${key}`)}>
               <svg class="size-[1.2em]" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="18" cy="16" r="4" stroke="#1C274C" stroke-width="1.5"/>
                 <circle cx="6" cy="16" r="4" stroke="#1C274C" stroke-width="1.5"/>

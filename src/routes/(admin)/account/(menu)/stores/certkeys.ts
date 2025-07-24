@@ -1,6 +1,7 @@
 import toastStore from "../../toasts";
 import { writable, type Writable } from 'svelte/store';
 import type {Connection} from "../../types/context/connection";
+import { configurationsMap } from './configurations';
 
 export let certkeysMap: Writable<Record<string, { [key: string]: any }>> = writable({});
 
@@ -46,4 +47,8 @@ export async function ReloadCertKeys(c: Connection, group: string, name: string)
     } catch (error) {
         toastStore.addToast({ message: error, type: 'error' });
     }
+}
+
+export function ClearCertKeys() {
+    certkeysMap.set({})
 }

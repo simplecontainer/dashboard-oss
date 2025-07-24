@@ -1,8 +1,14 @@
 <script lang="ts">
     import {onDestroy, onMount} from "svelte"
     import {GetActiveConnectionSession, SetActiveConnectionSession} from "../../session/session";
-    import {connection, connections, AddOrUpdateConnection, SetActiveConnection } from "../stores/connections"
-    import { type IRContext } from '../../types/context/type';
+    import {
+        connection,
+        connections,
+        AddOrUpdateConnection,
+        SetActiveConnection,
+        ClearActiveConnection, RemoveConnection
+    } from '../stores/connections';
+    import { type IConnection, type IRContext } from '../../types/context/type';
     import {Connection } from "../../types/context/connection";
     import {State} from "../../types/context/state";
     import {Context} from "../../types/context/context";
@@ -17,24 +23,23 @@
         eventsStore,
         popEvent
     } from "../events";
-    import {ReloadGitops, RemoveGitops} from "../stores/gitops";
-    import {ReloadContainer, RemoveContainer} from "../stores/containers";
+    import { ClearGitops, ReloadGitops, RemoveGitops } from '../stores/gitops';
+    import { ClearContainers, ReloadContainer, RemoveContainer } from '../stores/containers';
     import {socket} from "../sockets/wss"
     import {get, type Writable, writable} from "svelte/store";
     import toastStore from '../../toasts';
     import {Cluster} from "../../types/context/cluster";
     import {AddNode, ReloadNode} from "../stores/nodes";
     import {upgradeEvents, upgradingNode} from "../stores/control";
+    import { ClearConfigurations } from '../stores/configurations';
+    import { ClearSecrets } from '../stores/secrets';
+    import { ClearHttpAuths } from '../stores/httpauths';
+    import { ClearCertKeys } from '../stores/certkeys';
+    import { ClearResources } from '../stores/resources';
 
     export let clusters: IRContext[] = [];
     export let proxyApiDomain : string = ""
     export let proxyDomain : string = ""
-
-    console.log("ClusterModule props:", {
-        clusters,
-        proxyDomain,
-        proxyApiDomain
-    });
 
     function clickOutside(node) {
         const handleClick = (event) => {
@@ -87,6 +92,7 @@
             }
         }
     }
+
     async function ActivateConnection(c: Connection){
         try {
             await c.SetupProxy(proxyApiDomain, proxyDomain)
@@ -109,6 +115,20 @@
         await WSSConnect(c)
 
         document.getElementById("context-switcher").removeAttribute("open")
+    }
+    async function DeactivateConnection(c: Connection){
+        console.log(c)
+
+        if (c !== undefined && Object.keys(c).length > 0) {
+            if ($socket) {
+                $socket.close();
+                socket.set(null);
+            }
+
+            c.Clear()
+            ClearActiveConnection()
+            console.log("CLEARED")
+        }
     }
 
     function WSSConnect(c: Connection): Promise<boolean> {
@@ -239,7 +259,6 @@
                         }
                     } else {
                         socket.set(null);
-                        SetActiveConnection(c);
                         resolve(false);
                     }
                 };
@@ -253,7 +272,6 @@
             }
         });
     }
-
     async function handleUpgradeReconnection(c: Connection, resolve: (value: boolean) => void) {
         toastStore.addToast({
             message: 'Node is upgrading - will automatically reconnect when back online',
@@ -305,7 +323,6 @@
 
         resolve(false);
     }
-
     async function handleReconnection(c: Connection, resolve: (value: boolean) => void) {
         let attempts = 0;
         const maxAttempts = 1;
@@ -384,50 +401,64 @@
         };
 
         window.addEventListener('beforeunload', handleBeforeUnload);
-
     });
+
     onDestroy(() => {
         if (unsubscribe != null) {
             unsubscribe()
         }
     })
 
-    let showAlert = writable('');
     let message = writable('');
 
-    export const selectedConnection: Writable<Connection> = writable({} as Connection);
+    export async function ShowModal(c: Connection) {
+        DeactivateConnection($connection)
+        ActivateConnection(c)
 
-    export function ShowModal(c: Connection) {
-       ActivateConnection(c)
+        ClearGitops()
+        ClearContainers()
+        ClearConfigurations()
+        ClearCertKeys()
+        ClearSecrets()
+        ClearHttpAuths()
+        ClearResources()
     }
 </script>
 
 <li>
-    <details id="context-switcher" use:clickOutside onoutclick={() => document.getElementById("context-switcher").removeAttribute("open")}>
+    <details
+      id="context-switcher"
+      use:clickOutside
+      onoutclick={() => document.getElementById("context-switcher").removeAttribute("open")}
+      class="relative"
+    >
         <summary>
-            {#if $connection !== undefined && $connection !== null && $connection.Context !== undefined && $connection.Context.Name !== undefined }
+            {#if $connection?.Context?.Name}
                 <div class="flex items-center">
-                    {#if $connection.State.WSS === true}
-                    <span class="inline-block w-3 h-3 bg-green-500 rounded-full mr-1"></span>
+                    {#if $connection.State.WSS}
+                        <span class="inline-block w-3 h-3 bg-green-500 rounded-full mr-1"></span>
                     {/if}
-                    <span>{$connection.Context.Name}</span>
+                    <span class="truncate max-w-[10rem]">{$connection.Context.Name}</span>
                 </div>
             {:else}
-                {#if Array.from($connections.entries()).length == 0 }
-                Context list empty
+                {#if Array.from($connections.entries()).length === 0}
+                    Context list empty
                 {:else}
-                No active context
+                    No active context
                 {/if}
             {/if}
         </summary>
-        <ul class="relative bg-base-100 dropdown-end rounded-t-none p-2 right-0 w-52 z-50">
-            {#if Array.from($connections.entries()).length > 0 }
-                {#each Array.from($connections.entries()) as [key, c] }
-                <li>
-                    <a onclick={() => ShowModal(c)}>
-                        {c.Context.Name}
-                    </a>
-                </li>
+
+        <ul
+          class="absolute bg-base-100 rounded-t-none p-2 right-0 z-50 w-max max-w-sm break-words shadow-md"
+        >
+            {#if Array.from($connections.entries()).length > 0}
+                {#each Array.from($connections.entries()) as [key, c]}
+                    <li class="whitespace-normal break-words max-w-full">
+                        <a onclick={() => ShowModal(c)} class="block text-ellipsis overflow-hidden">
+                            {c.Context.Name}
+                        </a>
+                    </li>
                 {/each}
             {/if}
         </ul>

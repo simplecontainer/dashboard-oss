@@ -47,3 +47,7 @@ export async function ReloadSecret(c: Connection, group: string, name: string) {
         toastStore.addToast({ message: error, type: 'error' });
     }
 }
+
+export function ClearSecrets() {
+    secretsMap.set({})
+}

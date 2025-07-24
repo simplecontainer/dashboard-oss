@@ -47,3 +47,7 @@ export async function ReloadHttpAuth(c: Connection, group: string, name: string)
         toastStore.addToast({ message: error, type: 'error' });
     }
 }
+
+export function ClearHttpAuths() {
+    httpauthsMap.set({})
+}

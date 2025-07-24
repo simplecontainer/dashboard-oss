@@ -47,3 +47,7 @@ export async function ReloadResource(c: Connection, group: string, name: string)
         toastStore.addToast({ message: error, type: 'error' });
     }
 }
+
+export function ClearResources() {
+    resourcesMap.set({})
+}

@@ -64,3 +64,8 @@ export async function ReloadGitops(c: Connection, group: string, name: string) {
         RemoveGitops(`${group}-${name}`);
     }
 }
+
+export function ClearGitops() {
+    gitopsIds.set([])
+    gitopsMap.set({})
+}

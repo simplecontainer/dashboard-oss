@@ -47,3 +47,7 @@ export async function ReloadConfiguration(c: Connection, group: string, name: st
         toastStore.addToast({ message: error, type: 'error' });
     }
 }
+
+export function ClearConfigurations() {
+    configurationsMap.set({})
+}

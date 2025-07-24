@@ -9,6 +9,9 @@ const config = {
       precompress: false
     }),
     inlineStyleThreshold: 150000,
+    paths: {
+      relative: true,
+    }
   },
   preprocess: vitePreprocess()
 };
