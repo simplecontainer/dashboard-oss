@@ -12,6 +12,13 @@ over the resources.
 - Container control: restart, delete
 - Editor for applying resources directly from the dashboard
 
+# How to deploy?
+Dashboard can be easily deployed on the simplecontainer nodes directly.
+```cgo
+git clone https://github.com/simplecontainer/examples
+smrctl apply examples/dashboard
+```
+
 # How it works?
 No authentication is present on the dashboard. Dashboard reads contexts from the directory ~/.smrctl inside of the container.
 It is up to the user to provide authentication in front of the dashboard if it is hosted for central usage.
@@ -24,7 +31,7 @@ Second image shows GitOps (app-of-apps pattern) visualization. It also relies on
 in the real time directly on the diagram.
 ![Simplecontainer Containers](.github/resources/dashboard-gitops.png)
 
-# Security
+## Security
 Simplecontainer control-plane by default is secure because it relies on  mTLS for authentication and encryption fo the data.
 Browsers cannot handle mTLS advanced management and certificate-key mangling directly in the browser. Proxy-manager is accompanying dashboard to enable control plane communication.
 
