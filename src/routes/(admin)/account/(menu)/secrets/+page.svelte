@@ -40,7 +40,7 @@
 
     if (c.GetProxyURL() !== '' && !once) {
       once = true;
-      const resp = await fetch(`${c.GetProxyURL()}/api/v1/kind/simplecontainer.io/v1/kind/secret`, {
+      const resp = await fetchWithTimeout(`${c.GetProxyURL()}/api/v1/kind/simplecontainer.io/v1/kind/secret`, {
         method: 'GET',
         headers: { Upstream: btoa(c.Context.API).replace(/=+$/, '') }
       });

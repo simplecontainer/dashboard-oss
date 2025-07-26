@@ -2,7 +2,7 @@
   import { page } from '$app/stores';
   import { getContext, onDestroy, onMount } from 'svelte';
   import { writable, type Writable } from 'svelte/store';
-  import type { Connection } from '../../../../types/context/connection';
+  import { type Connection, fetchWithTimeout } from '../../../../types/context/connection';
   import { KIND_CONTAINERS } from '../../../../types/simplecontainer/static';
   import { timeSince, timeSinceDuration } from '../../../time';
   import { isEmptyObject } from '../../../../helpers/objects';
@@ -130,21 +130,21 @@
       const tmp = generatedName().split('-');
       const name = tmp.slice(1, -1).join('-');
 
-      resp = await fetch(`${c.GetProxyURL()}/api/v1/state/simplecontainer.io/v1/state/containers/${group()}/${name}/${generatedName()}`, {
+      resp = await fetchWithTimeout(`${c.GetProxyURL()}/api/v1/state/simplecontainer.io/v1/state/containers/${group()}/${name}/${generatedName()}`, {
         method: 'GET',
         headers: {
           Upstream: btoa(c.Context.API).replace(/=+$/, '')
         }
       });
     } else if (group()) {
-      resp = await fetch(`${c.GetProxyURL()}/api/v1/state/simplecontainer.io/v1/state/containers/${group()}`, {
+      resp = await fetchWithTimeout(`${c.GetProxyURL()}/api/v1/state/simplecontainer.io/v1/state/containers/${group()}`, {
         method: 'GET',
         headers: {
           Upstream: btoa(c.Context.API).replace(/=+$/, '')
         }
       });
     } else {
-      resp = await fetch(`${c.GetProxyURL()}/api/v1/state/simplecontainer.io/v1/state/containers`, {
+      resp = await fetchWithTimeout(`${c.GetProxyURL()}/api/v1/state/simplecontainer.io/v1/state/containers`, {
         method: 'GET',
         headers: {
           Upstream: btoa(c.Context.API).replace(/=+$/, '')
@@ -175,7 +175,7 @@
     try {
       const event = New(EVENT_RESTART, KIND_CONTAINERS, KIND_CONTAINERS, container.Platform.Group, container.Platform.GeneratedName, null);
 
-      const resp = await fetch(`${$connection.GetProxyURL()}/api/v1/kind/propose/simplecontainer.io/v1/event/containers/${container.Platform.Group}/${container.Platform.GeneratedName}`, {
+      const resp = await fetchWithTimeout(`${$connection.GetProxyURL()}/api/v1/kind/propose/simplecontainer.io/v1/event/containers/${container.Platform.Group}/${container.Platform.GeneratedName}`, {
         method: 'POST',
         body: ToJson(event),
         headers: {
@@ -197,7 +197,7 @@
 
   async function DeleteContainers(containerId: object) {
     try {
-      const resp = await fetch(`${$connection.GetProxyURL()}/api/v1/propose/remove`, {
+      const resp = await fetchWithTimeout(`${$connection.GetProxyURL()}/api/v1/propose/remove`, {
         method: 'DELETE',
         body: ToJson($containersMap[containerId].Definition),
         headers: {

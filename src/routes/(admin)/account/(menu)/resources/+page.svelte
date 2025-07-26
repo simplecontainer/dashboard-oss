@@ -11,7 +11,7 @@
   import ToastModule from "../shared/toast.module.svelte";
   import DockModule from "../dock/dock.module.svelte";
   import {isEmptyObject} from "../../helpers/objects";
-  import type {Connection} from "../../types/context/connection";
+  import { type Connection, fetchWithTimeout } from '../../types/context/connection';
   import {activeDockItem, editorContent, showFullScreenDiv} from "../stores/dock";
   import {Preview} from "../shared/preview"
 
@@ -31,7 +31,7 @@
     if (c.GetProxyURL() !== "" && !once) {
       once = true
 
-      const resp = await fetch(`${c.GetProxyURL()}/api/v1/kind/simplecontainer.io/v1/kind/resource`, {
+      const resp = await fetchWithTimeout(`${c.GetProxyURL()}/api/v1/kind/simplecontainer.io/v1/kind/resource`, {
         method: 'GET',
         headers: {
         Upstream: btoa(c.Context.API).replace(/=+$/,''),

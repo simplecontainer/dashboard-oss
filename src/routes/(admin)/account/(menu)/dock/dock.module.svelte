@@ -37,7 +37,7 @@
     }
 
     const Apply = async (object) => {
-        const resp = await fetch(`${$connection.GetProxyURL()}/api/v1/propose/apply`, {
+        const resp = await fetchWithTimeout(`${$connection.GetProxyURL()}/api/v1/propose/apply`, {
             method: 'POST',
             headers: {
                 Upstream: btoa($connection.Context.API).replace(/=+$/,''),

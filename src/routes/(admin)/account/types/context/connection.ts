@@ -141,13 +141,16 @@ function hexToBytes(hex: string): Uint8Array {
 }
 
 export const fetchWithTimeout = (url: string, options: RequestInit, timeout = 5000) => {
+    console.log("CALLING", url)
+
     return Promise.race([
         fetch(url, {
             ...options,
             headers: {
                 ...options.headers,
             },
-            credentials: 'include'
+            credentials: 'include',
+            mode: 'cors'
         }),
         new Promise((_, reject) =>
             setTimeout(() => reject(new Error('Request timed out')), timeout)

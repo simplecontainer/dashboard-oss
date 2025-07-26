@@ -57,7 +57,7 @@
             });
     }
     async function FetchLatestTags(){
-        fetch(`https://quay.io/api/v1/repository/simplecontainer/smr/tag/?limit=5&onlyActiveTags=true`, {
+        fetchWithTimeout(`https://quay.io/api/v1/repository/simplecontainer/smr/tag/?limit=5&onlyActiveTags=true`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -182,7 +182,7 @@
     }
 
     async function SendControl(c: Connection, control: Control) {
-        const resp = await fetch(`${c.GetProxyURL()}/api/v1/cluster/control`, {
+        const resp = await fetchWithTimeout(`${c.GetProxyURL()}/api/v1/cluster/control`, {
             method: 'POST',
             headers: {
                 Upstream: btoa(c.Context.API).replace(/=+$/,''),

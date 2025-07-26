@@ -4,7 +4,7 @@
   import {connections, connection, RemoveConnection} from "../stores/connections";
   import ClusterModule from "./context.module.svelte"
   import ToastModule from "../shared/toast.module.svelte";
-  import type {Connection} from "../../types/context/connection";
+  import { type Connection, fetchWithTimeout } from '../../types/context/connection';
   import ConfirmationModal from "../shared/confirm.svelte";
   import NoContexts from "../skeletons/nocontexts.module.svelte";
   import DockModule from "../dock/dock.module.svelte";
@@ -29,7 +29,7 @@
 
     document.getElementById('confirm-delete-context-modal').close()
 
-    const res = await fetch('/account/api?/deleteCluster', {
+    const res = await fetchWithTimeout('/account/api?/deleteCluster', {
       method: 'POST',
       body: formData,
     });

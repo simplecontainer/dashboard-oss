@@ -1,5 +1,5 @@
 import { writable, type Writable } from 'svelte/store';
-import type {Connection} from "../../types/context/connection";
+import { type Connection, fetchWithTimeout } from '../../types/context/connection';
 
 export let gitopsIds: Writable<string[]> = writable([]);
 export let gitopsMap: Writable<Record<string, { [key: string]: any }>> = writable({});
@@ -41,7 +41,7 @@ export function RemoveGitops(id: string) {
 
 export async function ReloadGitops(c: Connection, group: string, name: string) {
     try {
-        const resp = await fetch(`${c.GetProxyURL()}/api/v1/kind/simplecontainer.io/v1/state/gitops/${group}/${name}/${name}`, {
+        const resp = await fetchWithTimeout(`${c.GetProxyURL()}/api/v1/kind/simplecontainer.io/v1/state/gitops/${group}/${name}/${name}`, {
             method: 'GET',
             headers: {
         Upstream: btoa(c.Context.API).replace(/=+$/,''),

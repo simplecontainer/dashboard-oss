@@ -5,7 +5,7 @@ import {
     SetActiveConnectionSession
 } from "../../session/session";
 
-import type {Connection} from "../../types/context/connection";
+import { type Connection, fetchWithTimeout } from '../../types/context/connection';
 
 export const connections: Writable<Map<string, Connection>> = writable(new Map());
 export const connection: Writable<Connection> = writable({} as Connection);

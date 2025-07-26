@@ -1,6 +1,6 @@
 import toastStore from "../../toasts";
 import { writable, type Writable } from 'svelte/store';
-import type {Connection} from "../../types/context/connection";
+import { type Connection, fetchWithTimeout } from '../../types/context/connection';
 import { elapsedTimerStore } from './time';
 
 export let containerIds: Writable<string[]> = writable([]);
@@ -53,7 +53,7 @@ export async function ReloadContainer(c: Connection, group: string, field: strin
     const name = tmp.slice(1, -1).join("-");
 
     try {
-        const resp = await fetch(`${c.GetProxyURL()}/api/v1/state/simplecontainer.io/v1/state/containers/${group}/${name}/${field}`, {
+        const resp = await fetchWithTimeout(`${c.GetProxyURL()}/api/v1/state/simplecontainer.io/v1/state/containers/${group}/${name}/${field}`, {
             method: 'GET',
             headers: {
                 Upstream: btoa(c.Context.API).replace(/=+$/,''),

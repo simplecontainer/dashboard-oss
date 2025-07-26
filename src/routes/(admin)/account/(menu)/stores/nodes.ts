@@ -1,7 +1,7 @@
 import toastStore from "../../toasts";
 import type { Node } from "../../types/node/type";
 import { writable, type Writable } from 'svelte/store';
-import type {Connection} from "../../types/context/connection";
+import { type Connection, fetchWithTimeout } from '../../types/context/connection';
 
 export const nodesMap: Writable<Record<string, Node>> = writable({});
 
@@ -25,7 +25,7 @@ export function RemoveNode(id: string) {
 
 export async function ReloadNode(c: Connection, NodeID: string) {
     try {
-        const nodeRes = await fetch(`${c.GetProxyURL()}/api/v1/cluster/node/${NodeID}`, {
+        const nodeRes = await fetchWithTimeout(`${c.GetProxyURL()}/api/v1/cluster/node/${NodeID}`, {
             headers: { Upstream: btoa(c.Context.API).replace(/=+$/,'') },
         });
 
@@ -40,7 +40,7 @@ export async function ReloadNode(c: Connection, NodeID: string) {
             return;
         }
 
-        const versionRes = await fetch(`${c.GetProxyURL()}/api/v1/node/version/${nodeData.Data.NodeID}`, {
+        const versionRes = await fetchWithTimeout(`${c.GetProxyURL()}/api/v1/node/version/${nodeData.Data.NodeID}`, {
             headers: { Upstream: btoa(c.Context.API).replace(/=+$/,'') },
         });
 

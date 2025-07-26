@@ -107,7 +107,7 @@
   });
 
   async function LoadNodes(c: Connection) {
-    const resp = await fetch(`${c.Context.ProxyURL}/api/v1/cluster/nodes`, {
+    const resp = await fetchWithTimeout(`${c.Context.ProxyURL}/api/v1/cluster/nodes`, {
       method: 'GET',
       headers: {
         Upstream: btoa(c.Context.API).replace(/=+$/, '')

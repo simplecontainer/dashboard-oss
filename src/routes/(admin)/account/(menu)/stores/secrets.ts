@@ -1,6 +1,6 @@
 import toastStore from "../../toasts";
 import { writable, type Writable } from 'svelte/store';
-import type {Connection} from "../../types/context/connection";
+import { type Connection, fetchWithTimeout } from '../../types/context/connection';
 
 export const secretsMap: Writable<Record<string, { [key: string]: any }>> = writable({});
 
@@ -28,7 +28,7 @@ export function RemoveSecret(id: string) {
 
 export async function ReloadSecret(c: Connection, group: string, name: string) {
     try {
-        const resp = await fetch(`${c.GetProxyURL()}/api/v1/kind/simplecontainer.io/v1/kind/secret/${group}/${name}`, {
+        const resp = await fetchWithTimeout(`${c.GetProxyURL()}/api/v1/kind/simplecontainer.io/v1/kind/secret/${group}/${name}`, {
             method: 'GET',
         });
 

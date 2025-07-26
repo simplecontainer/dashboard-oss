@@ -12,7 +12,7 @@
   import {certkeysMap, AddCertKey} from "../stores/certkeys";
   import ToastModule from "../shared/toast.module.svelte";
   import DockModule from "../dock/dock.module.svelte";
-  import type {Connection} from "../../types/context/connection";
+  import { type Connection, fetchWithTimeout } from '../../types/context/connection';
   import {isEmptyObject} from "../../helpers/objects";
   import {Preview} from "../shared/preview";
 
@@ -41,7 +41,7 @@
     if (c.GetProxyURL() !== "" && !once) {
       once = true
 
-      const resp = await fetch(`${c.Context.ProxyURL}/api/v1/kind/simplecontainer.io/v1/kind/certkey`, {
+      const resp = await fetchWithTimeout(`${c.Context.ProxyURL}/api/v1/kind/simplecontainer.io/v1/kind/certkey`, {
         method: 'GET',
         headers: {
         Upstream: btoa(c.Context.API).replace(/=+$/,''),

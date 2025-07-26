@@ -79,7 +79,7 @@
     if (c.GetProxyURL() !== '' && !once) {
       once = true;
 
-      const resp = await fetch(`${c.GetProxyURL()}/api/v1/state/simplecontainer.io/v1/state/gitops`, {
+      const resp = await fetchWithTimeout(`${c.GetProxyURL()}/api/v1/state/simplecontainer.io/v1/state/gitops`, {
         method: 'GET',
         headers: {
           Upstream: btoa(c.Context.API).replace(/=+$/, '')
@@ -104,7 +104,7 @@
   async function Diff(original) {
     var diff = JSON.parse(JSON.stringify(original));
 
-    const resp = await fetch(`${$connection.GetProxyURL()}/api/v1/kind/compare/${original.prefix}/kind/${original.kind}/${original.meta.group}/${original.meta.name}`, {
+    const resp = await fetchWithTimeout(`${$connection.GetProxyURL()}/api/v1/kind/compare/${original.prefix}/kind/${original.kind}/${original.meta.group}/${original.meta.name}`, {
       method: 'POST',
       body: JSON.stringify(original),
       headers: {
@@ -159,7 +159,7 @@
     try {
       const event = New(EVENT_SYNC, KIND_GITOPS, KIND_GITOPS, gitops.Definition.meta.group, gitops.Definition.meta.name, null);
 
-      const resp = await fetch(`${$connection.GetProxyURL()}/api/v1/kind/propose/simplecontainer.io/v1/event/gitops/${gitops.Definition.meta.group}/${gitops.Definition.meta.name}`, {
+      const resp = await fetchWithTimeout(`${$connection.GetProxyURL()}/api/v1/kind/propose/simplecontainer.io/v1/event/gitops/${gitops.Definition.meta.group}/${gitops.Definition.meta.name}`, {
         method: 'POST',
         body: ToJson(event),
         headers: {
@@ -183,7 +183,7 @@
     try {
       const event = New(EVENT_REFRESH, KIND_GITOPS, KIND_GITOPS, gitops.Definition.meta.group, gitops.Definition.meta.name, null);
 
-      const resp = await fetch(`${$connection.GetProxyURL()}/api/v1/kind/propose/simplecontainer.io/v1/event/gitops/${gitops.Definition.meta.group}/${gitops.Definition.meta.name}`, {
+      const resp = await fetchWithTimeout(`${$connection.GetProxyURL()}/api/v1/kind/propose/simplecontainer.io/v1/event/gitops/${gitops.Definition.meta.group}/${gitops.Definition.meta.name}`, {
         method: 'POST',
         body: ToJson(event),
         headers: {
@@ -207,7 +207,7 @@
 
   async function DeleteGitops(gitopsId: object) {
     try {
-      const resp = await fetch(`${$connection.GetProxyURL()}/api/v1/propose/remove`, {
+      const resp = await fetchWithTimeout(`${$connection.GetProxyURL()}/api/v1/propose/remove`, {
         method: 'DELETE',
         body: ToJson($gitopsMap[gitopsId].Definition),
         headers: {
