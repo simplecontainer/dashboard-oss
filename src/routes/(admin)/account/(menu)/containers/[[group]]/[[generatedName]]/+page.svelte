@@ -154,8 +154,6 @@
 
     const states = (await resp.json()).Data;
 
-    console.log(states)
-
     if (Array.isArray(states)) {
       toggleItem('');
 

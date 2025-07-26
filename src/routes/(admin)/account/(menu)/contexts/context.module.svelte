@@ -117,8 +117,6 @@
         document.getElementById("context-switcher").removeAttribute("open")
     }
     async function DeactivateConnection(c: Connection){
-        console.log(c)
-
         if (c !== undefined && Object.keys(c).length > 0) {
             if ($socket) {
                 $socket.close();
@@ -127,7 +125,6 @@
 
             c.Clear()
             ClearActiveConnection()
-            console.log("CLEARED")
         }
     }
 
