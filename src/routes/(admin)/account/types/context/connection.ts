@@ -146,7 +146,8 @@ export const fetchWithTimeout = (url: string, options: RequestInit, timeout = 50
             ...options,
             headers: {
                 ...options.headers,
-            }
+            },
+            credentials: 'include'
         }),
         new Promise((_, reject) =>
             setTimeout(() => reject(new Error('Request timed out')), timeout)
