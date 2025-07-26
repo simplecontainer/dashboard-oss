@@ -5,7 +5,7 @@
     import { createGraph } from "./dag/graph";
     import type {DAGEdge, DAGNode} from "./dag/type";
     import { createNode, getStatusInfo } from "./workflow";
-    import type { Connection } from "../../types/context/connection";
+    import { type Connection, fetchWithTimeout } from "../../types/context/connection";
     import {gitopsMap} from "../stores/gitops";
     import {containersMap, ReloadContainer} from "../stores/containers"
     import {display, InnerLabel, Label} from "./dag/label";

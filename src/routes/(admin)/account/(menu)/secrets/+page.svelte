@@ -9,7 +9,7 @@
   import { AddSecret, secretsMap } from '../stores/secrets';
   import ToastModule from '../shared/toast.module.svelte';
   import DockModule from '../dock/dock.module.svelte';
-  import type { Connection } from '../../types/context/connection';
+  import { type Connection, fetchWithTimeout } from '../../types/context/connection';
   import { isEmptyObject } from '../../helpers/objects';
   import { activeDockItem, editorContent, showFullScreenDiv } from '../stores/dock';
   import { Edit, Preview } from '../shared/preview';

@@ -14,7 +14,7 @@
   import ConfirmationModal from '../shared/confirm.svelte';
   import { Control } from '../../types/control/control';
   import type { Node } from '../../types/node/type';
-  import type { Connection } from '../../types/context/connection';
+  import { type Connection, fetchWithTimeout } from '../../types/context/connection';
   import { AddControl } from '../stores/control';
 
   let confirmRef: ConfirmationModal;

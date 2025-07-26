@@ -17,7 +17,7 @@
   import ConfirmationModal from '../shared/confirm.svelte';
   import ToastModule from '../shared/toast.module.svelte';
   import DockModule from '../dock/dock.module.svelte';
-  import type { Connection } from '../../types/context/connection';
+  import { type Connection, fetchWithTimeout } from '../../types/context/connection';
   import { isEmptyObject } from '../../helpers/objects';
   import EditorModule from '../shared/editor.svelte';
   import EditorDiffModule from '../shared/editor.diff.svelte';

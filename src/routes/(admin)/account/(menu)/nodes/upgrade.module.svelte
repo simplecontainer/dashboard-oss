@@ -57,7 +57,7 @@
             });
     }
     async function FetchLatestTags(){
-        fetchWithTimeout(`https://quay.io/api/v1/repository/simplecontainer/smr/tag/?limit=5&onlyActiveTags=true`, {
+        fetch(`https://quay.io/api/v1/repository/simplecontainer/smr/tag/?limit=5&onlyActiveTags=true`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
