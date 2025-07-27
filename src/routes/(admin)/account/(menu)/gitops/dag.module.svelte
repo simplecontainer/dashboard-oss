@@ -5,7 +5,6 @@
     import { createGraph } from "./dag/graph";
     import type {DAGEdge, DAGNode} from "./dag/type";
     import { createNode, getStatusInfo } from "./workflow";
-    import { type Connection, fetchWithTimeout } from "../../types/context/connection";
     import {gitopsMap} from "../stores/gitops";
     import {containersMap, ReloadContainer} from "../stores/containers"
     import {display, InnerLabel, Label} from "./dag/label";
@@ -32,7 +31,7 @@
         }));
 
         for (let d of $gitopsMap[id].Gitops.Pack.Definitions) {
-            let def = d.Definition.Definition.Definition
+            let def = d.Definition.Definition
 
             const defId = `${def.kind}-${def.meta.group}-${def.meta.name}`;
             const metaId = `${def.meta.group}-${def.meta.name}`;
