@@ -1,4 +1,4 @@
-# Simplecontainer Dashboard
+# Dashboard
 
 The **dashboard** is a lightweight web UI for managing Simplecontainer nodes and containers. It connects directly to the control-plane API and offers a visual interface for inspecting and interacting with nodes and containers.
 
