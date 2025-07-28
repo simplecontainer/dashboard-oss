@@ -16,55 +16,55 @@ The **Simplecontainer Dashboard** is a lightweight web UI for managing Simplecon
 
 ---
 
-## Getting Started
+## How to run?
+Dashboard comes as container package (Pack) that makes running it easy. You can use the already available Dashboard pack to install it and run it directly on the Simplecontainer node.
 
-To launch the dashboard locally:
+### Localhost
+Add these to /etc/hosts file:
 
-```bash
-# Clone example resources
-git clone https://github.com/simplecontainer/examples.git
+```
+127.0.0.1 authentik.dashboard.localhost
+127.0.0.1 proxy.dashboard.localhost
+127.0.0.1 api.dashboard.localhost
+127.0.0.1 dashboard.localhost
+```
 
-# Apply the dashboard deployment pack
-smrctl apply examples/dashboard-plain --set user=$USER
+After that run:
 
-# Verify running containers
+```
+git clone https://github.com/simplecontainer/dashboard-pack.git
+mkcert dashboard.localhost proxy.dashboard.localhost api.dashboard.localhost authentik.dashboard.localhost
+smrctl apply dashboard-pack --set user=$USER --set traefik.certificate="$(cat dashboard.localhost+3.pem)" --set traefik.key="$(cat dashboard.localhost+3-key.pem)"
+```
+
+That's it. This pack runs:
+
+- Authentik
+- Postgres
+- Traefik
+- Dashboard
+- Proxy-manager
+
+- Just access https://dashboard.locahost and you should see the login form.
+
+> [!IMPORTANT]
+> ⚠️️ Authentik user needs to be setup first. Visit https://authentik.dashboard.localhost/if/flows/initial-setup to create an admin user.
+
+After applying dashboard pack, success of the deployment can be verified:
+
+```
 smrctl ps
+NODE                    RESOURCE                                            IMAGE                                                      PORTS                 ENGINE STATE      SMR STATE     
+smr-development-node-1  containers/authentik/authentik-authentik-worker-1   ghcr.io/goauthentik/server:latest (pulled)                 -                     running (docker)  running (1s)  
+smr-development-node-1  containers/authentik/authentik-authentik-1          ghcr.io/goauthentik/server:latest (pulled)                 9000                  running (docker)  running (1s)  
+smr-development-node-1  containers/authentik/authentik-pg-1                 postgres:15 (pulled)                                       -                     running (docker)  running (1s)  
+smr-development-node-1  containers/authentik/authentik-redis-1              redis:alpine (pulled)                                      -                     running (docker)  running (1s)  
+smr-development-node-1  containers/dashboard/dashboard-dashboard-oss-1      quay.io/simplecontainer/dashboard-oss:latest (pulled)      3000                  running (docker)  running (1s)  
+smr-development-node-1  containers/dashboard/dashboard-proxy-manager-oss-1  quay.io/simplecontainer/proxy-manager-oss:latest (pulled)  5443, 5480            running (docker)  running (1s)  
+smr-development-node-1  containers/traefik/traefik-traefik-1                traefik:v3.5.0 (pulled)                                    80:80, 443:443, 8080  running (docker)  running (1s)  
 ```
 
-Example output:
-
-```
-NODE                    RESOURCE                                            IMAGE                                             PORTS                 ENGINE STATE      SMR STATE        
-smr-dev-node-1          containers/dashboard/dashboard-dashboard-oss-1      quay.io/simplecontainer/dashboard-oss:latest      8080:3000             running (docker)  running (43s)    
-smr-dev-node-1          containers/dashboard/dashboard-proxy-manager-oss-1  quay.io/simplecontainer/proxy-manager-oss:latest  5443:5443, 5480:5480  running (docker)  running (1m18s)  
-```
-
-## Deploy Authentik in front of the dashboard
-
-```bash
-# Clone example resources
-git clone https://github.com/simplecontainer/examples.git
-
-# Apply the dashboard deployment pack
-smrctl apply examples/dashboard --set user=$USER
-
-# Verify running containers
-smrctl ps
-```
-
-Example output:
-
-```
-NODE                    RESOURCE                                            IMAGE                                             PORTS                 ENGINE STATE      SMR STATE        
-smr-dev-node-1          containers/dashboard/dashboard-dashboard-oss-1      quay.io/simplecontainer/dashboard-oss:latest      8080:3000             running (docker)  running (43s)    
-smr-dev-node-1          containers/dashboard/dashboard-proxy-manager-oss-1  quay.io/simplecontainer/proxy-manager-oss:latest  5443:5443, 5480:5480  running (docker)  running (1m18s)  
-```
-
-
-
----
-
-## 🔒 Security Model
+## Security Model
 
 * The dashboard **does not implement built-in authentication**.
 * It mounts the host's `~/.smrctl` directory inside the container, making all available contexts accessible.
