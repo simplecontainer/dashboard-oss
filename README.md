@@ -1,6 +1,6 @@
 # Simplecontainer Dashboard
 
-The **Simplecontainer Dashboard** is a lightweight web UI for managing Simplecontainer nodes. It connects directly to the control-plane API and offers a visual interface for inspecting and interacting with system resources.
+The **dashboard** is a lightweight web UI for managing Simplecontainer nodes and containers. It connects directly to the control-plane API and offers a visual interface for inspecting and interacting with nodes and containers.
 
 > ⚠️ **Note:** The dashboard provides essential capabilities for visualization and management. For complete control over resources, use the CLI tool: `smrctl`.
 
@@ -8,11 +8,10 @@ The **Simplecontainer Dashboard** is a lightweight web UI for managing Simplecon
 
 ## Features
 
-* Real-time visualization of all active resources
-* GitOps visualization using the app-of-apps pattern
-* GitOps controls: `refresh`, `sync`, `delete`
-* Container controls: `restart`, `delete`
-* Built-in editor for applying resource manifests from the UI
+* Real-time visualization of containers and gitops
+* Editor to apply resources via UI
+* Context switcher to allow easy switching between contexts
+* Containers and gitops controls for syncing, restarting and deleting
 
 ---
 
