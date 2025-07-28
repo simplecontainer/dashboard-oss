@@ -292,15 +292,18 @@
                 <td>{$containersMap[containerId].Platform.Image}:{$containersMap[containerId].Platform.Tag}</td>
 
                 <td>
-                  {#each $containersMap[containerId].Platform.Networks.Networks as network}
-                    <div class="badge badge-primary badge-outline mr-1 mb-1">
-                      {#if network.Docker.IP != ""}
-                        {network.Reference.Name}: {network.Docker.IP}
-                      {:else}
-                        Not attached
-                      {/if}
-                    </div>
-                  {/each}
+                  <!-- Fixed: Added flex-wrap to allow badges to wrap -->
+                  <div class="flex flex-wrap gap-1">
+                    {#each $containersMap[containerId].Platform.Networks.Networks as network}
+                      <div class="badge badge-primary badge-outline whitespace-nowrap">
+                        {#if network.Docker.IP != ""}
+                          {network.Reference.Name}: {network.Docker.IP}
+                        {:else}
+                          Not attached
+                        {/if}
+                      </div>
+                    {/each}
+                  </div>
                 </td>
 
                 <td class="py-2 px-4">
@@ -552,9 +555,10 @@
                                 <div class="stat-desc primary">Reported by engine</div>
                               </div>
                             </div>
-                            <div class="mt-5 max-w-full">
+                            <!-- Fixed: Added flex-wrap to labels section -->
+                            <div class="mt-5 max-w-full flex flex-wrap gap-1">
                               {#each Object.entries($containersMap[containerId].Platform.Labels.Labels) as [key, label] }
-                                <span class="badge badge-info mr-1 mb-1">{key}: {label}</span>
+                                <span class="badge badge-info whitespace-nowrap">{key}: {label}</span>
                               {/each}
                             </div>
                             <div class="divider"></div>
@@ -676,9 +680,12 @@
                                             <tr>
                                               <th>COMMAND</th>
                                               <td>
-                                                {#each readiness.Command as cmd}
-                                                  <span class="badge">{cmd}</span>
-                                                {/each}
+                                                <!-- Fixed: Added flex-wrap for command badges -->
+                                                <div class="flex flex-wrap gap-1">
+                                                  {#each readiness.Command as cmd}
+                                                    <span class="badge whitespace-nowrap">{cmd}</span>
+                                                  {/each}
+                                                </div>
                                               </td>
                                             </tr>
                                           {/if}
@@ -756,9 +763,12 @@
                                             <tr>
                                               <th>DNS</th>
                                               <td>
-                                                {#each $containersMap[containerId].Platform.Docker.DNS as dns}
-                                                  <span class="badge">{dns}</span>
-                                                {/each}
+                                                <!-- Fixed: Added flex-wrap for DNS badges -->
+                                                <div class="flex flex-wrap gap-1">
+                                                  {#each $containersMap[containerId].Platform.Docker.DNS as dns}
+                                                    <span class="badge whitespace-nowrap">{dns}</span>
+                                                  {/each}
+                                                </div>
                                               </td>
                                             </tr>
                                             {#if $containersMap[containerId].Platform.Ports.Ports !== undefined }
@@ -766,10 +776,12 @@
                                                 <tr>
                                                   <td>
                                                     <div class="mb-1"><b>PORTS</b></div>
-                                                    <span class="badge">{port.Container}</span>
-                                                    {#if port.Host != ""}
-                                                      :<span class="badge">{port.Host}</span>
-                                                    {/if}
+                                                    <div class="flex flex-wrap gap-1">
+                                                      <span class="badge whitespace-nowrap">{port.Container}</span>
+                                                      {#if port.Host != ""}
+                                                        :<span class="badge whitespace-nowrap">{port.Host}</span>
+                                                      {/if}
+                                                    </div>
                                                   </td>
                                                 </tr>
                                               {/each}

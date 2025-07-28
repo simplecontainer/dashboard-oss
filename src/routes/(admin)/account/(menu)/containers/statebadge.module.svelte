@@ -226,11 +226,13 @@
 <div class="flex flex-col gap-1">
   {#if stateHistory.length === 0}
     {@const statusInfo = getStatusInfo(state)}
-    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full {statusInfo.bgColor} border border-gray-300 border-opacity-20 {statusInfo.textColor.replace('text-', 'border-')} transition-all duration-500 ease-in-out">
-      <div class="w-2 h-2 rounded-full {statusInfo.dotColor} {(state === 'running' || state === 'pending') ? 'animate-pulse' : ''}"></div>
-      <span class="text-xs font-medium {statusInfo.textColor}">{statusInfo.label}</span>
+    <div class="inline-flex flex-col items-start gap-1 px-3 py-1.5 rounded-full {statusInfo.bgColor} border border-gray-300 border-opacity-20 {statusInfo.textColor.replace('text-', 'border-')} transition-all duration-500 ease-in-out">
+      <div class="flex items-center gap-2">
+        <div class="w-2 h-2 rounded-full {statusInfo.dotColor} {(state === 'running' || state === 'pending') ? 'animate-pulse' : ''}"></div>
+        <span class="text-xs font-medium {statusInfo.textColor}">{statusInfo.label}</span>
+      </div>
       {#if time}
-        <span class="text-xs {statusInfo.textColor} opacity-75">• {time}</span>
+        <div class="text-xs {statusInfo.textColor} opacity-75 ml-4">{time}</div>
       {/if}
     </div>
   {:else}
@@ -241,16 +243,18 @@
       {@const opacity = isLatest ? 1 : Math.max(0.3, 1 - (age / transitionDuration))}
 
       <div
-        class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full {statusInfo.bgColor} border border-gray-300 border-opacity-20 {statusInfo.textColor.replace('text-', 'border-')} transition-all duration-500 ease-in-out"
+        class="inline-flex flex-col items-start gap-1 px-3 py-1.5 rounded-full {statusInfo.bgColor} border border-gray-300 border-opacity-20 {statusInfo.textColor.replace('text-', 'border-')} transition-all duration-500 ease-in-out"
         style="opacity: {opacity}; transform: translateY({index * 2}px) scale({isLatest ? 1 : 0.95})"
       >
-        <div class="w-2 h-2 rounded-full {statusInfo.dotColor} {(entry.state === 'running' || entry.state === 'pending') && isLatest ? 'animate-pulse' : ''}"></div>
-        <span class="text-xs font-medium {statusInfo.textColor}">{statusInfo.label}</span>
+        <div class="flex items-center gap-2">
+          <div class="w-2 h-2 rounded-full {statusInfo.dotColor} {(entry.state === 'running' || entry.state === 'pending') && isLatest ? 'animate-pulse' : ''}"></div>
+          <span class="text-xs font-medium {statusInfo.textColor}">{statusInfo.label}</span>
+          {#if !isLatest}
+            <span class="text-xs {statusInfo.textColor} opacity-50">↓</span>
+          {/if}
+        </div>
         {#if entry.time}
-          <span class="text-xs {statusInfo.textColor} opacity-75">• {entry.time}</span>
-        {/if}
-        {#if !isLatest}
-          <span class="text-xs {statusInfo.textColor} opacity-50 ml-1">↓</span>
+          <div class="text-xs {statusInfo.textColor} opacity-75 ml-4">{entry.time}</div>
         {/if}
       </div>
     {/each}
