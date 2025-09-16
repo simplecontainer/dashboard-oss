@@ -127,7 +127,7 @@
 
 <div class="navbar bg-base-100">
   <div class="flex-1">
-    <a class="btn btn-ghost text-xl" href="/account/containers">Nodes</a>
+    <a class="text-xl font-bold pl-2" href="/account/containers">Nodes</a>
   </div>
   <div class="flex-none">
     <ul class="menu menu-horizontal px-1">

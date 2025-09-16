@@ -111,14 +111,6 @@
       </li>
       <li>
         <a
-          href="/account/resources"
-          class={adminSection === "resources" ? "active" : ""}
-          onclick={closeDrawer}
-        > Resources
-        </a>
-      </li>
-      <li>
-        <a
           href="/account/configurations"
           class={adminSection === "configurations" ? "active" : ""}
           onclick={closeDrawer}
@@ -131,6 +123,14 @@
           class={adminSection === "secrets" ? "active" : ""}
           onclick={closeDrawer}
         > Secrets
+        </a>
+      </li>
+      <li>
+        <a
+          href="/account/resources"
+          class={adminSection === "resources" ? "active" : ""}
+          onclick={closeDrawer}
+        > Resources
         </a>
       </li>
       <li>

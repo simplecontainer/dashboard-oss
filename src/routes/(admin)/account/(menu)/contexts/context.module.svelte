@@ -23,7 +23,7 @@
         eventsStore,
         popEvent
     } from "../events";
-    import { ClearGitops, ReloadGitops, RemoveGitops } from '../stores/gitops';
+    import { ClearGitops, ReloadGitops, RemoveGitops, UpdateState } from '../stores/gitops';
     import { ClearContainers, ReloadContainer, RemoveContainer } from '../stores/containers';
     import {socket} from "../sockets/wss"
     import {get, type Writable, writable} from "svelte/store";
@@ -36,6 +36,8 @@
     import { ClearHttpAuths } from '../stores/httpauths';
     import { ClearCertKeys } from '../stores/certkeys';
     import { ClearResources } from '../stores/resources';
+
+    import { gitopsIds, gitopsMap } from '../stores/gitops';
 
     export let clusters: IRContext[] = [];
     export let proxyApiDomain : string = ""
@@ -374,6 +376,8 @@
                         case EVENT_DELETED:
                             RemoveGitops(`${e.Group}-${e.Name}`)
                             break
+                        default:
+                            UpdateState(e.Group, e.Name, e.Type, Date.now())
                     }
                     break
 

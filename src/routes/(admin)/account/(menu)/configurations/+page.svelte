@@ -81,7 +81,7 @@
 
 <div class="navbar bg-base-100">
   <div class="flex-1">
-    <a href="/account/configurations" class="btn btn-ghost text-xl">Configurations</a>
+    <a href="/account/configurations" class="text-xl font-bold pl-2">Configurations</a>
   </div>
   <div class="flex-none">
     <ul class="menu menu-horizontal px-1">

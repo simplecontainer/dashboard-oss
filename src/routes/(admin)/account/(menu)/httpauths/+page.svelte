@@ -80,7 +80,7 @@
 
 <div class="navbar bg-base-100">
   <div class="flex-1">
-    <a href="/account/resources" class="btn btn-ghost text-xl">HttpAuths</a>
+    <a href="/account/resources" class="text-xl font-bold pl-2">HttpAuths</a>
   </div>
   <div class="flex-none">
     <ul class="menu menu-horizontal px-1">

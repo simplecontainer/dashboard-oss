@@ -128,6 +128,7 @@
       <ul class="list bg-base-100 rounded-box shadow-md">
         <li class="p-4 pb-2 text-xs opacity-60 tracking-wide">CONTENT</li>
         {#each Object.entries(resource.spec) as [key,value]}
+          {#if value.length > 0}
           <li class="list-row">
             <div>
               <svg class="size-10" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -152,6 +153,7 @@
               </svg>
             </button>
           </li>
+          {/if}
         {/each}
       </ul>
     </div>

@@ -18,6 +18,99 @@
 
   function getStatusInfo(state: string) {
     switch (state) {
+      case 'syncing':
+        return {
+          bgColor: 'bg-green-50',
+          textColor: 'text-green-700',
+          dotColor: 'bg-green-500',
+          label: 'InSync',
+        };
+      case 'syncing_state':
+        return {
+          bgColor: 'bg-indigo-50',
+          textColor: 'text-indigo-700',
+          dotColor: 'bg-indigo-500',
+          label: 'Syncing',
+        };
+      case 'backoff':
+        return {
+          bgColor: 'bg-yellow-50',
+          textColor: 'text-yellow-700',
+          dotColor: 'bg-yellow-500',
+          label: 'Backoff',
+        };
+      case 'cloning':
+        return {
+          bgColor: 'bg-sky-50',
+          textColor: 'text-sky-700',
+          dotColor: 'bg-sky-500',
+          label: 'Cloning',
+        };
+      case 'pushing_changes':
+        return {
+          bgColor: 'bg-sky-50',
+          textColor: 'text-sky-700',
+          dotColor: 'bg-sky-500',
+          label: 'Pushing Changes',
+        };
+      case 'cloned':
+        return {
+          bgColor: 'bg-blue-50',
+          textColor: 'text-blue-700',
+          dotColor: 'bg-blue-500',
+          label: 'Cloned',
+        };
+      case 'git_invalid':
+      case 'git_push_invalid':
+      case 'definitions_invalid':
+        return {
+          bgColor: 'bg-red-50',
+          textColor: 'text-red-700',
+          dotColor: 'bg-red-500',
+          label: 'Invalid',
+        };
+      case 'git_push_success':
+        return {
+          bgColor: 'bg-green-50',
+          textColor: 'text-green-700',
+          dotColor: 'bg-green-500',
+          label: 'Git Push Success',
+        };
+      case 'insync':
+        return {
+          bgColor: 'bg-green-50',
+          textColor: 'text-green-700',
+          dotColor: 'bg-green-500',
+          label: 'In Sync',
+        };
+      case 'drifted':
+        return {
+          bgColor: 'bg-orange-50',
+          textColor: 'text-orange-700',
+          dotColor: 'bg-orange-500',
+          label: 'Drifted',
+        };
+      case 'inspecting':
+        return {
+          bgColor: 'bg-gray-50',
+          textColor: 'text-gray-700',
+          dotColor: 'bg-gray-500',
+          label: 'Inspecting',
+        };
+      case 'pending_delete':
+        return {
+          bgColor: 'bg-red-50',
+          textColor: 'text-red-700',
+          dotColor: 'bg-red-500',
+          label: 'Pending Delete',
+        };
+      case 'not_owner':
+        return {
+          bgColor: 'bg-red-100',
+          textColor: 'text-red-800',
+          dotColor: 'bg-red-600',
+          label: 'Not Owner',
+        };
       case 'initial':
         return {
           bgColor: 'bg-gray-50',
@@ -227,7 +320,7 @@
   {#if stateHistory.length === 0}
     {@const statusInfo = getStatusInfo(state)}
     <div class="inline-flex flex-col items-start gap-1 px-3 py-1.5 rounded-full {statusInfo.bgColor} border border-gray-300 border-opacity-20 {statusInfo.textColor.replace('text-', 'border-')} transition-all duration-500 ease-in-out">
-      <div class="flex items-center gap-2">
+      <div class="flex items-center gap-2 truncate">
         <div class="w-2 h-2 rounded-full {statusInfo.dotColor} {(state === 'running' || state === 'pending') ? 'animate-pulse' : ''}"></div>
         <span class="text-xs font-medium {statusInfo.textColor}">{statusInfo.label}</span>
       </div>
@@ -248,7 +341,7 @@
           {statusInfo.bgColor} {statusInfo.textColor} border-gray-200 transition-all duration-500 ease-in-out"
           style="opacity: {opacity}; transform: translateY({index * 2}px) scale({isLatest ? 1 : 0.97})"
         >
-          <div class="flex items-center gap-2">
+          <div class="flex items-center gap-2 truncate">
             <div class="w-2 h-2 rounded-full {statusInfo.dotColor} {(entry.state === 'running' || entry.state === 'pending') && isLatest ? 'animate-pulse' : ''}"></div>
             <span>{statusInfo.label}</span>
             {#if !isLatest}

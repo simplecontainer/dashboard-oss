@@ -13,6 +13,7 @@
   import { isEmptyObject } from '../../helpers/objects';
   import { activeDockItem, editorContent, showFullScreenDiv } from '../stores/dock';
   import { Edit, Preview } from '../shared/preview';
+  import ExpandableInput from '../shared/expandableb64.svelte';
 
   let checkedItems = writable<Record<string, boolean>>({});
   let openItem = writable<string | null>(null);
@@ -92,7 +93,7 @@
 
 <div class="navbar bg-base-100">
   <div class="flex-1">
-    <a href="/account/secrets" class="btn btn-ghost border-0 text-xl">Secrets</a>
+    <a href="/account/secrets" class="text-xl font-bold pl-2">Secrets</a>
   </div>
   <div class="flex-none">
     <ul class="menu menu-horizontal px-1">
@@ -111,12 +112,11 @@
       <EmptyModule />
     {:else}
       <div class="w-full mt-5 p-10 bg-base-100 flex flex-col justify-center rounded-lg shadow-md">
-        <div class="overflow-hidden w-full">
+        <div class="w-full">
           <table class="min-w-full text-sm">
             <thead>
             <tr class="border-b border-gray-200">
-              <th class="px-3 py-2 text-left text-gray-500">Name</th>
-              <th class="px-3 py-2 text-left text-gray-500">Group</th>
+              <th class="px-3 py-2 text-left text-gray-500">Resource</th>
               <th class="px-3 py-2 text-left text-gray-500">Data Keys</th>
               <th class="px-3 py-2 text-left text-gray-500">Actions</th>
             </tr>
@@ -133,18 +133,17 @@
               {@const dataKeys = Object.keys(resource.spec.data)}
               {@const keyData = renderDataKeys(dataKeys)}
 
-              <tr class="hover:bg-gray-60 cursor-pointer">
-                <td class="px-3 py-2 font-medium text-gray-900 truncate">{resource.meta.name}</td>
-                <td class="px-3 py-2 text-gray-700 truncate">{resource.meta.group}</td>
+              <tr class="hover:bg-base-300">
+                <td class="px-3 py-2 font-medium text-gray-900 truncate">secret/{resource.meta.group}/{resource.meta.name}</td>
                 <td class="px-3 py-2">
-                  <div class="flex flex-wrap gap-1 max-w-[280px]">
+                  <div class="flex flex-wrap gap-1">
                     {#each keyData.visible as dataKey}
                         <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium text-blue-800 border border-blue-200 max-w-[150px] overflow-hidden text-ellipsis whitespace-nowrap hover:border-blue-300" title={dataKeys.find(k => k.startsWith(dataKey.replace('...', '')))}>
                           {dataKey}
                         </span>
                     {/each}
                     {#if keyData.hasMore}
-                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium text-gray-600 border border-gray-300 cursor-help" title={keyData.hidden.join(', ')}>
+                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium text-gray-600 border border-gray-300" title={keyData.hidden.join(', ')}>
                           +{keyData.hidden.length} more
                         </span>
                     {/if}
@@ -171,7 +170,6 @@
                         type="checkbox"
                       />
 
-                      <!-- hamburger icon -->
                       <svg
                         class="swap-off fill-current"
                         xmlns="http://www.w3.org/2000/svg"
@@ -181,7 +179,6 @@
                         <path d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z" />
                       </svg>
 
-                      <!-- close icon -->
                       <svg
                         class="swap-on fill-current"
                         xmlns="http://www.w3.org/2000/svg"
@@ -194,38 +191,27 @@
                     </label>
                   </div>
                 </td>
-<!--                <td class="px-3 py-2">-->
-<!--                  {#if $openItem === key}-->
-<!--                    <svg class="w-4 h-4 rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">-->
-<!--                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />-->
-<!--                    </svg>-->
-<!--                  {:else}-->
-<!--                    <svg class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">-->
-<!--                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />-->
-<!--                    </svg>-->
-<!--                  {/if}-->
-<!--                </td>-->
               </tr>
 
               {#if $openItem === key}
                 <tr>
                   <td colspan="5" class="px-3 py-4">
-                    <h4 class="text-sm font-semibold text-gray-600 mb-3">Secret Data</h4>
+                    <h4 class="text-sm font-semibold text-gray-600 mb-3">Secrets</h4>
                     <div class="grid gap-3">
-                      {#each Object.entries(resource.spec.data) as [dataKey, value]}
-                        <div class="border border-gray-300 rounded-lg p-4">
-                          <div class="flex justify-between items-center mb-2">
-                            <span class="font-medium text-gray-700 break-all">{dataKey}</span>
-                            <!--<button class="btn btn-xs btn-ghost" on:click={Code}>Edit</button>!-->
-                          </div>
-                          <input
-                            type="text"
-                            class="input input-bordered w-full bg-base-100 text-base-content opacity-60 cursor-default focus:border focus:border-base-100"
-                            readonly
-                            value="{value}"
-                          >
-                        </div>
-                      {/each}
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th>Secret</th>
+                            <th>Value</th>
+                          </tr>
+                        </thead>
+                        {#each Object.entries(resource.spec.data) as [dataKey, value]}
+                          <tr>
+                            <td><strong>{dataKey}</strong></td>
+                            <td><ExpandableInput size="text-sm" value={value} /></td>
+                          </tr>
+                        {/each}
+                      </table>
                     </div>
                   </td>
                 </tr>

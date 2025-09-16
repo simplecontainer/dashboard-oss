@@ -1,6 +1,7 @@
 import toastStore from "../../toasts";
 import { writable, type Writable } from 'svelte/store';
 import { type Connection, fetchWithTimeout } from '../../types/context/connection';
+import { gitopsMap } from './gitops';
 
 export const secretsMap: Writable<Record<string, { [key: string]: any }>> = writable({});
 
@@ -46,6 +47,34 @@ export async function ReloadSecret(c: Connection, group: string, name: string) {
     } catch (error) {
         toastStore.addToast({ message: error, type: 'error' });
     }
+}
+
+export function UpdateValue(group: string, name: string, state: string, time: any) {
+    gitopsMap.update(currentMap => {
+        const key = `${group}-${name}`;
+
+        const target = currentMap[key] || {
+            Gitops: { Status: { state: { state: null }, LastUpdate: null } }
+        };
+
+        return {
+            ...currentMap,
+            [key]: {
+                ...target,
+                Gitops: {
+                    ...target.Gitops,
+                    Status: {
+                        ...target.Gitops.Status,
+                        state: {
+                            ...target.Gitops.Status.state,
+                            state: state
+                        },
+                        LastUpdate: time
+                    }
+                }
+            }
+        };
+    });
 }
 
 export function ClearSecrets() {

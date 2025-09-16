@@ -1,5 +1,6 @@
 import { writable, type Writable } from 'svelte/store';
 import { type Connection, fetchWithTimeout } from '../../types/context/connection';
+import { elapsedTimerStore } from './time';
 
 export let gitopsIds: Writable<string[]> = writable([]);
 export let gitopsMap: Writable<Record<string, { [key: string]: any }>> = writable({});
@@ -11,10 +12,14 @@ export function AddGitops(gitops: any) {
         );
 
         if (existingId) {
+            elapsedTimerStore.add(existingId, new Date(gitops.Gitops.Status.LastUpdate).getTime());
             return { ...gitopses, [existingId]: gitops };
         } else {
+            UpdateState(gitops.Definition.meta.group, gitops.Definition.meta.name, "test", "test")
+
             gitopsIds.update(ids => {
                 const newIds = [...ids, `${gitops.Definition.meta.group}-${gitops.Definition.meta.name}`];
+                elapsedTimerStore.add(`${gitops.Definition.meta.group}-${gitops.Definition.meta.name}`, new Date(gitops.Gitops.Status.LastUpdate).getTime());
 
                 return newIds.sort((a, b) => {
                     const [groupA, nameA] = a.split(new RegExp("-")).splice(0, 2);
@@ -36,16 +41,45 @@ export function RemoveGitops(id: string) {
         return newContainers;
     });
 
+    elapsedTimerStore.remove(id);
     gitopsIds.update(ids => ids.filter(existingId => existingId !== id));
+}
+
+export function UpdateState(group: string, name: string, state: string, time: any) {
+    gitopsMap.update(currentMap => {
+        const key = `${group}-${name}`;
+
+        const target = currentMap[key] || {
+            Gitops: { Status: { state: { state: null }, LastUpdate: null } }
+        };
+
+        return {
+            ...currentMap,
+            [key]: {
+                ...target,
+                Gitops: {
+                    ...target.Gitops,
+                    Status: {
+                        ...target.Gitops.Status,
+                        state: {
+                            ...target.Gitops.Status.state,
+                            state: state
+                        },
+                        LastUpdate: time
+                    }
+                }
+            }
+        };
+    });
 }
 
 export async function ReloadGitops(c: Connection, group: string, name: string) {
     try {
-        const resp = await fetchWithTimeout(`${c.GetProxyURL()}/api/v1/kind/simplecontainer.io/v1/state/gitops/${group}/${name}/${name}`, {
+        const resp = await fetchWithTimeout(`${c.GetProxyURL()}/api/v1/state/simplecontainer.io/v1/state/gitops/${group}/${name}/${name}`, {
             method: 'GET',
             headers: {
-        Upstream: btoa(c.Context.API).replace(/=+$/,''),
-      },
+              Upstream: btoa(c.Context.API).replace(/=+$/,''),
+            },
         });
 
         if (resp.status == 200) {

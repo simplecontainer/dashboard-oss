@@ -31,7 +31,7 @@
         }));
 
         for (let d of $gitopsMap[id].Gitops.Pack.Definitions) {
-            let def = d.Definition.Definition
+            let def = d.Definition.Definition.Definition
 
             const defId = `${def.kind}-${def.meta.group}-${def.meta.name}`;
             const metaId = `${def.meta.group}-${def.meta.name}`;
@@ -57,7 +57,9 @@
                     }
 
                     const container = $containersMap[containerId];
-                    const containerState = container?.General?.Status?.state?.State ?? "unknown";
+                    const containerState = container?.General?.Status?.state?.state ?? "unknown";
+
+                    console.log(container)
 
                     nodes.push(createNode({
                         id: containerId,
