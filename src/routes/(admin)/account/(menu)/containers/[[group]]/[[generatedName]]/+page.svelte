@@ -602,7 +602,7 @@
                                         <h2 class="card-title">
                                           Resource
                                         </h2>
-                                        <div class="overflow-x-auto">
+                                        <div>
                                           <table class="table">
                                             <tbody>
                                             <tr>
@@ -891,30 +891,6 @@
                           <div role="tabpanel" class="tab-content rounded-box p-6">
                             <div class="flex w-full flex-col">
                               <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4">
-                                {#if $containersMap[containerId].Definition.spec.dependencies !== undefined }
-                                  {#each $containersMap[containerId].Definition.spec.dependencies as dependency }
-                                    <div class="card bg-base-100 shadow-xl">
-                                      <div class="card-body">
-                                        <h2 class="card-title">
-                                          Container
-                                        </h2>
-                                        <div>
-                                          {#if dependency.name === "*"}
-                                            Depends on all containers in the group {dependency.group}
-                                          {:else}
-                                            <span class="badge">{dependency.prefix}/{dependency.group}
-                                              /{dependency.name}</span>
-                                          {/if}
-                                        </div>
-                                      </div>
-                                    </div>
-                                  {/each}
-                                {:else}
-                                  No container dependencies.
-                                {/if}
-                              </div>
-                              <div class="divider"></div>
-                              <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4">
                                 {#if $containersMap[containerId].General.Runtime.ObjectDependencies !== undefined && $containersMap[containerId].General.Runtime.ObjectDependencies.length > 0 }
                                   {#each $containersMap[containerId].General.Runtime.ObjectDependencies as dependency }
                                     <div class="card bg-base-100 shadow-xl">
@@ -923,27 +899,7 @@
                                           {dependency.Elements[3]}
                                         </h2>
                                         <div>
-                                          <div class="flex">
-                                            <button
-                                              class="btn btn-sm btn-outline mr-2"
-                                              on:click={() => copyToClipboard(`${dependency.Elements.join("/").toString()}`)}>
-                                              View
-                                            </button>
-                                            <button
-                                              class="btn btn-sm btn-outline mr-2"
-                                              on:click={() => copyToClipboard(`${dependency.Elements.join("/").toString()}`)}>
-                                              Copy
-                                            </button>
-
-                                          </div>
-                                          <table class="table">
-                                            <tbody>
-                                            <tr>
-                                              <td class="max-w-[120px] truncate text-ellipsis text-right"
-                                                  dir="rtl">{dependency.Elements.join("/")}</td>
-                                            </tr>
-                                            </tbody>
-                                          </table>
+                                          <ExpandableInput size="text-sm" value={dependency.Elements.join("/")} />
                                           <div class="mt-5">
                                             <span class="text-sm">*Any change in the specified resource will trigger recreate of container.</span>
                                           </div>

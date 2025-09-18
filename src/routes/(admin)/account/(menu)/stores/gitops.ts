@@ -88,7 +88,7 @@ export async function ReloadGitops(c: Connection, group: string, name: string) {
             if (state.HttpStatus === 200) {
                 AddGitops(state.Data);
             } else {
-                RemoveGitops(`${state.Data.Definition.meta.group}-${state.Data.Definition.meta.name}`);
+                RemoveGitops(`${group}-${name}`);
             }
         } else {
             RemoveGitops(`${group}-${name}`);

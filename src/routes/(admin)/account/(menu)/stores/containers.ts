@@ -36,6 +36,27 @@ export function RemoveContainer(id: string) {
     containerIds.update(ids => ids.filter(existingId => existingId !== id));
 }
 
+export async function LoadContainers(c: Connection) {
+    ClearContainers();
+
+    let resp = await fetchWithTimeout(`${c.GetProxyURL()}/api/v1/state/simplecontainer.io/v1/state/containers`, {
+        method: 'GET',
+        headers: {
+            Upstream: btoa(c.Context.API).replace(/=+$/, '')
+        }
+    });
+
+    const states = (await resp.json()).Data;
+
+    if (Array.isArray(states)) {
+        for (let state of states) {
+            AddContainer(state);
+        }
+    } else {
+        AddContainer(states);
+    }
+}
+
 export function ClearContainers() {
     containersMap.set({});
     containerIds.set([]);

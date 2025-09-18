@@ -181,6 +181,13 @@
           dotColor: 'bg-green-500',
           label: 'Dependencies Solved',
         };
+      case 'start':
+        return {
+          bgColor: 'bg-yellow-50',
+          textColor: 'text-yellow-700',
+          dotColor: 'bg-yellow-500',
+          label: 'Starting',
+        };
       case 'readiness_check':
         return {
           bgColor: 'bg-yellow-50',
@@ -223,7 +230,7 @@
           dotColor: 'bg-red-500',
           label: 'Daemon Failure',
         };
-      case 'restart':
+      case 'restarting':
         return {
           bgColor: 'bg-amber-50',
           textColor: 'text-amber-700',
