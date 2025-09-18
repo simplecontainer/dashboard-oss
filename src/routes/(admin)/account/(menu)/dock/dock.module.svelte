@@ -164,6 +164,10 @@
           message: result.Explanation || 'Applied successfully',
           type: 'success'
         });
+
+        activeDockItem.set('');
+        activeContent.set('');
+        showFullScreenDiv.set(false);
       } else {
         toastStore.addToast({
           message: result.ErrorExplanation || 'Failed to apply',

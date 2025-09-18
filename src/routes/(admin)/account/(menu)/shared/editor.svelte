@@ -13,7 +13,6 @@
     let editorContainer: HTMLDivElement;
     let editor: Monaco.editor.IStandaloneCodeEditor | null = null;
 
-
     onMount(async () => {
         editor = await monaco.editor.create(editorContainer, {
             value: code,
@@ -23,7 +22,7 @@
         });
 
         editor.onDidChangeModelContent(() => {
-            content.set(editor.getValue());
+            editorContent.set(editor.getValue());
         });
     });
 
